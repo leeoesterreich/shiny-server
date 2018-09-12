@@ -15,4 +15,5 @@ Edit repository to include new directory with ui.R, server.R, and any accompanyi
 #ssh to droplet
 
 cd /srv/shiny-server
+
 git pull https://github.com/levinek/shiny-server/
