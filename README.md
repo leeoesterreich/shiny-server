@@ -13,5 +13,6 @@ https://www.r-bloggers.com/deploying-your-very-own-shiny-server/
 
 Edit repository to include new directory with ui.R, server.R, and any accompanying code
 #ssh to droplet
+
 cd /srv/shiny-server
 git pull https://github.com/levinek/shiny-server/
