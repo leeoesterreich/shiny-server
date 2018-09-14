@@ -3,9 +3,6 @@ http://104.248.122.217/shiny/apps/esr1-mut/
 
 
 README for lab shiny app maintenance 
-
-Directory for shiny apps on lab digital ocean server
-
 #Links for setting up rstudio shiny server on digital ocean
 
 https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04
