@@ -1,5 +1,5 @@
 Links to lab shiny apps
-http://104.248.122.217/shiny/apps/esr1-mut/
+https://leeoesterreich.org/resources
 
 
 README for lab shiny app maintenance 
