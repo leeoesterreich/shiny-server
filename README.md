@@ -16,4 +16,4 @@ Edit repository to include new directory with ui.R, server.R, and any accompanyi
 
 cd /srv/shiny-server
 
-git pull https://github.com/levinek/shiny-server/
+git pull https://github.com/leeoesterreich/shiny-server/
