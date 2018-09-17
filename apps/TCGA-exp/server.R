@@ -1,7 +1,7 @@
 load("primary_tpm.Rda")
 load("normal_tpm.Rda")
 load("bind.Rda")
-#group<-as.list(colnames(df[,23369:23372]))
+
 shinyServer(function(input, output) {
   
   PAM<-reactive({
@@ -368,7 +368,7 @@ shinyServer(function(input, output) {
       a1<-aov(PAM()[,1]~PAM()[,2])
       tt<-TukeyHSD(a1)
       result<-data.frame(tt$`PAM()[, 2]`)
-      result["p.adj"]
+      signif(result, digits = 3)
     })
     
   }
