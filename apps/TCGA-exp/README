@@ -1,4 +1,4 @@
 TCGA data downloaded from https://www.ncbi.nlm.nih.gov/pubmed/26209429
 
 bind.Rda and primary_tpm.Rda are too large to add to github. They have the same format as normal_tpm, with primary_tpm also having pam50 designations.
-bind.Rda contains a duplicate copy of primary_tpm, with er_status_by_ihc, pam50, and histology categories defined as "tumor", to allow for the adjacent-normal vs tumor comparisons
+bind.Rda contains primary_tpm, normal_tpm, and a duplicate copy of primary_tpm with er_status_by_ihc, pam50, and histology categories defined as "tumor", to allow for the adjacent-normal vs tumor comparisons
