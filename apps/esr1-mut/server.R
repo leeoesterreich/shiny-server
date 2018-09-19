@@ -4,7 +4,7 @@ library(ggplot2)
 
 #load("esr1_salmonlog2TPM_HGNC.Rda")
 #esr1_salmonlog2TPM_HGNC = temp
-setwd("/Users/liz6/Box Sync/WCRC/Oesterreich Lab/Current lab members/Vaciry/Vaciry/Bioinformatical analysis/Shiny/SO_ESR1 mut/")
+
 load("esr1_salmonlog2TPM_HGNC.Rda")
 esr1_salmonlog2TPM_HGNC =tmp
 Ali<-read.csv("Ali_data_filtered.csv",sep=",")
