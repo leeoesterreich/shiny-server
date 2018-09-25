@@ -68,7 +68,7 @@ shinyServer(function(input, output) {
       labs(x = "ER Genotype", y = "log2 TPM") +
       ggtitle(paste("SO_MCF7_", input$gene)) +
       scale_fill_discrete(name = "Treatments") + theme(axis.text=element_text(size=18),
-                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)))
+                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), legend.text = element_text(size = 18), legend.title = element_text(size=20))
     #scale_fill_discrete(name = "E2 status") + theme(axis.text=element_text(size=9),
     #                                                axis.title=element_text(size=10,face="bold"), plot.title = element_text(size = 10), legend.text = element_text(size = 9), legend.title = element_text(size=10))
   })
@@ -128,7 +128,7 @@ shinyServer(function(input, output) {
       labs(x = "ER Genotype", y = "log2 TPM") +
       ggtitle(paste("SO_T47D_", input$gene)) +
       scale_fill_discrete(name = "Treatments") + theme(axis.text=element_text(size=18),
-                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), show.legend=F)
+                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), legend.text = element_text(size = 18), legend.title = element_text(size=20))
   })
   output$plotTPM_MCF7_SA <- renderPlot({
     row = grep(paste("^", input$gene, "$", sep=""), Ali[,"hugo"])
