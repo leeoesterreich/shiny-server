@@ -128,7 +128,7 @@ shinyServer(function(input, output) {
       labs(x = "ER Genotype", y = "log2 TPM") +
       ggtitle(paste("SO_T47D_", input$gene)) +
       scale_fill_discrete(name = "Treatments") + theme(axis.text=element_text(size=18),
-                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), legend.text = element_text(size = 18), legend.title = element_text(size=20))
+                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), show.legend=F)
   })
   output$plotTPM_MCF7_SA <- renderPlot({
     row = grep(paste("^", input$gene, "$", sep=""), Ali[,"hugo"])
