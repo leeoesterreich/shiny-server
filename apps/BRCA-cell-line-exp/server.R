@@ -9,7 +9,7 @@ shinyServer(function(input, output) {
     queryzGARP<-queryzGARP[,-c(1,2,3)]
     queryzGARPdf<-t(queryzGARP)
     queryExpressiondf<-t(queryExpression)
-    querydata<-as.data.frame(matrix(NA,81,2))
+    querydata<-as.data.frame(matrix(NA,82,2))
     rownames(querydata)<-rownames(queryExpressiondf)
     colnames(querydata)<-c("Expression","zGARP")
     querydata[,1]<-queryExpressiondf[rownames(querydata),1]
