@@ -91,6 +91,6 @@ observe({
     }
   })
 
-
+options(shiny.sanitize.errors = TRUE)
 
 })
