@@ -21,5 +21,4 @@ shinyUI(fluidPage(
       dataTableOutput("plotData")
     )
    )
-  options(shiny.sanitize.errors = FALSE)
 ))
