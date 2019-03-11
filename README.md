@@ -21,3 +21,10 @@ Edit repository to include new directory with ui.R, server.R, and any accompanyi
 cd /srv/shiny-server
 
 git pull https://github.com/leeoesterreich/shiny-server/
+
+# ensure necessary libraries are installed - can be performed after signing into the server by modifying example command below
+
+sudo su - \
+    -c "R -e \"install.packages(c('dqshiny','ggbeeswarm'), repos='http://cran.rstudio.com/')\”"
+    
+
