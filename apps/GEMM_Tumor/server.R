@@ -1,7 +1,6 @@
 library(shiny)
 library(ggplot2)
 
-setwd("/Users/liz6/Box Sync/WCRC/Lee-Oesterreich-lab-personnel/Current/Vaciry/Vaciry/Bioinformatical analysis/shiny/GEMM_Tumor/")
 GEMM_CPM<-read.csv("GEMM_CPM.csv")
 group<-read.csv("Group.csv",header=T)
 
