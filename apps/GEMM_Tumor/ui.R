@@ -17,9 +17,11 @@ shinyUI(fluidPage(
     
     mainPanel(
       fluidRow(
-        column(7,plotOutput("ER")))
-        
-      ))
+        column(5,plotOutput("ER"))),
+      fluidRow(
+        column(5,plotOutput("ER_by_mouse")))
+      
+    ))
     
   
 )
