@@ -1,9 +1,9 @@
 library(shiny)
 library(ggplot2)
 
-load(file="GEMM_CPM1.Rda")
+load("GEMM_CPM1.Rda")
+load("GEMM_CPM2.Rda")
 group<-read.csv("Group.csv",header=T,stringsAsFactors = F)
-load(file="GEMM_CPM2.Rda")
 group2<-read.csv("Group2.csv",header=T,stringsAsFactors = F)
 
 # Define server logic required to draw a histogram
