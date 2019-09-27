@@ -12,7 +12,7 @@ library(reshape)
 
 #setwd(setwd("~/Desktop/shinyapp2"))
 
-load("PanMets_22.Rda")
+load("PanMets_2.Rda")
 Key_file= read.csv("sample.csv")
 
 shinyServer(function(input, output) {
@@ -20,7 +20,7 @@ shinyServer(function(input, output) {
   #ovaries only
   output$ov <-renderPlot({
     gene<-input$gene
-    chosedGene <- subset(PanMets_22, (external_gene_name %in% gene))
+    chosedGene <- subset(PanMets_2, (external_gene_name %in% gene))
     
     mdat = melt(chosedGene, id.vars=("external_gene_name"))
     
@@ -55,7 +55,7 @@ shinyServer(function(input, output) {
   
   output$ov.sb <-renderPlot({
     gene<-input$gene
-    chosedGene <- subset(PanMets_22, (external_gene_name %in% gene))
+    chosedGene <- subset(PanMets_2, (external_gene_name %in% gene))
     
     mdat = melt(chosedGene, id.vars=("external_gene_name"))
     
@@ -84,7 +84,7 @@ shinyServer(function(input, output) {
   
   output$gi <-renderPlot({
     gene<-input$gene
-    chosedGene <- subset(PanMets_22, (external_gene_name %in% gene))
+    chosedGene <- subset(PanMets_2, (external_gene_name %in% gene))
     
     mdat = melt(chosedGene, id.vars=("external_gene_name"))
     
@@ -118,7 +118,7 @@ shinyServer(function(input, output) {
   
   output$br <-renderPlot({
     gene<-input$gene
-    chosedGene <- subset(PanMets_22, (external_gene_name %in% gene))
+    chosedGene <- subset(PanMets_2, (external_gene_name %in% gene))
     
     mdat = melt(chosedGene, id.vars=("external_gene_name"))
     
@@ -152,7 +152,7 @@ shinyServer(function(input, output) {
   
   output$br.er <-renderPlot({
     gene<-input$gene
-    chosedGene <- subset(PanMets_22, (external_gene_name %in% gene))
+    chosedGene <- subset(PanMets_2, (external_gene_name %in% gene))
     
     mdat = melt(chosedGene, id.vars=("external_gene_name"))
     
@@ -181,7 +181,7 @@ shinyServer(function(input, output) {
   
   output$bo <-renderPlot({
     gene<-input$gene
-    chosedGene <- subset(PanMets_22, (external_gene_name %in% gene))
+    chosedGene <- subset(PanMets_2, (external_gene_name %in% gene))
     
     mdat = melt(chosedGene, id.vars=("external_gene_name"))
     
