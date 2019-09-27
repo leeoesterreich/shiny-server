@@ -1,8 +1,8 @@
 library(shiny)
 library(ggplot2)
-
+#setwd("/Users/liz6/Box Sync/WCRC/Lee-Oesterreich-lab-personnel/Current/Vaciry/Vaciry/Bioinformatical analysis/Shiny/GEMM_Tumor/")
 load("GEMM_CPM1.Rda")
-load("GEMM_CPM2.Rda")
+load("GEMM_CPM3.Rda")
 group<-read.csv("Group.csv",header=T,stringsAsFactors = F)
 group2<-read.csv("Group2.csv",header=T,stringsAsFactors = F)
 
