@@ -12,7 +12,7 @@ library(reshape)
 
 #setwd(setwd("~/Desktop/shinyapp2"))
 
-load("PanMets_2.Rda")
+load("PanMets_22.Rda")
 Key_file= read.csv("sample.csv")
 
 shinyServer(function(input, output) {
