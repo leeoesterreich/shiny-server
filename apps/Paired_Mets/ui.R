@@ -172,11 +172,14 @@ shinyUI(fluidPage(
                                                                               ,"ZNF772","ZNF773","ZNF774","ZNF775","ZNF776","ZNF777","ZNF778","ZNF780A","ZNF780B","ZNF781","ZNF782","ZNF784","ZNF785","ZNF786","ZNF787","ZNF789","ZNF79","ZNF790","ZNF791","ZNF792","ZNF793","ZNF8","ZNF80","ZNF800","ZNF804A","ZNF804B","ZNF805","ZNF806","ZNF81","ZNF812","ZNF813","ZNF814","ZNF815P","ZNF816","ZNF821","ZNF823","ZNF827","ZNF829","ZNF83","ZNF830","ZNF831","ZNF833P","ZNF835","ZNF839","ZNF841","ZNF843","ZNF846","ZNF847P","ZNF85","ZNF850","ZNF862","ZNF865","ZNF876P","ZNF883","ZNF890P","ZNF90","ZNF91","ZNF92","ZNF93","ZNF98","ZNF99","ZNFX1","ZNHIT1","ZNHIT2","ZNHIT3","ZNHIT6","ZNRD1","ZNRF1","ZNRF2","ZNRF2P1","ZNRF3","ZNRF4","ZP1","ZP2","ZP3","ZP4","ZPBP","ZPBP2","ZPLD1","ZRANB1","ZRANB2","ZRANB3","ZRSR2","ZSCAN1","ZSCAN10","ZSCAN12","ZSCAN16","ZSCAN18","ZSCAN2","ZSCAN20","ZSCAN21","ZSCAN22","ZSCAN25","ZSCAN26","ZSCAN29","ZSCAN31","ZSCAN32","ZSCAN4","ZSCAN5A","ZSCAN5B","ZSCAN5D","ZSCAN9","ZSWIM1","ZSWIM2","ZSWIM3","ZSWIM4","ZSWIM5","ZSWIM6","ZSWIM8","ZUFSP","ZW10","ZWILCH","ZWINT","ZXDA","ZXDB","ZXDC"
                                                                               ,"ZYG11A","ZYG11B","ZYX","ZZEF1","ZZZ3"),
                   selected="ESR1"), 
-      "The project includes 22 Brain met pairs, 11 Bone met pairs, 14 Ovarian met pairs, and 7 GI met pairs.
-      The first 4 plots represent expression change for each paired sample for the specified metastatic site. ER status is indicated by connected or dashed 
-      line while subtype status are color coded.The ovarian mets had a good mix for the ILC and IDC subtypes while the brain had a good mix of ERpos vs ERneg mets,
-      thus additional plots for these comparisons are available."
+      "These projects includes 22 Brain met pairs, 11 Bone met pairs, 14 Ovarian met pairs, and 7 GI met pairs.
+      The ovarian mets had a good mix for the ILC and IDC subtypes while the brain had a good mix of ERpos vs ERneg mets,
+      thus additional plots for these comparisons are available. Transcript counts from all samples were quantified with 
+      Salmon v.0.8.2 and converted to gene-level counts using tximport. The gene-level counts from all studies were then normalized 
+      together using TMM with edgeR. Log2 transformed TMM-normalized counts per million: log2 (TMM-CPM+1) expression values are shown in the plots. 
+      log2 (TMM-CPM+1) values, sample annotations, and code for shiny app available at https://github.com/leeoesterreich/shiny-server/tree/master/apps/Paired_Mets
+      Publication references for samples: PMID:28878133, PMID:29961873, PMID:31263748"
     ),
-    mainPanel(plotOutput("br"),plotOutput("bo"),plotOutput("ov"),plotOutput("gi"),plotOutput("ov.sb"),plotOutput("br.er"))
-    )
-    ))
+    mainPanel(plotOutput("all"),plotOutput("br"),plotOutput("bo"),plotOutput("ov"),plotOutput("gi"),plotOutput("ov.sb"),plotOutput("br.er"))
+  )
+))
