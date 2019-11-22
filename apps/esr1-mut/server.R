@@ -1,56 +1,41 @@
 library(shiny)
 library(ggplot2)
 
-
-#load("esr1_salmonlog2TPM_HGNC.Rda")
-#esr1_salmonlog2TPM_HGNC = temp
-
-load("esr1_salmonlog2TPM_HGNC.Rda")
-esr1_salmonlog2TPM_HGNC =tmp
-Ali<-read.csv("Ali_data_filtered.csv",sep=",")
-MB<-read.csv("MB_log2cpm.csv",sep=",")
+MCF7_1<-read.csv("SO_MCF7.csv",sep=",",header=T)
+MCF7_2<-read.csv("JG_MCF7.csv",sep=",",header=T)
+MCF7_3<-read.csv("SA_MCF7.csv",sep=",",header=T)
+MCF7_4<-read.csv("MB_MCF7.csv",sep=",",header=T)
+MCF7_5<-read.csv("Liu_CPM.csv",sep=",",header=T)
+MCF7_6<-read.csv("Baran_CPM.csv",sep=",",header=T)
+MCF7_7<-read.csv("Greenlief_MCF7.csv",sep=",",header=T)
+T47D_1<-read.csv("SO_T47D.csv",sep=",",header=T)
+T47D_2<-read.csv("Creighton.csv",sep=",",header=T)
+T47D_3<-read.csv("JG_T47D.csv",sep=",",header=T)
+T47D_4<-read.csv("Shapiro_T47D.csv",sep=",",header=T)
+ZR<-read.csv("ZR75_1_Log2INT.csv",sep=",",header=T)
+Sikora<-read.csv("Sikora.csv",sep=",",header=T)
+Key<-read.csv("Key.csv",header=T)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
+
   
-  output$plotTPM_MCF7_SO <- renderPlot({
-    row = grep(paste("^", input$gene, "$", sep=""), esr1_salmonlog2TPM_HGNC[,"external_gene_name"])
-    df = matrix(NA, nrow = 6, ncol =  4)
-    colnames(df) = c("WT_MUT", "E2_Veh", "meanTPM", "sdTPM")
-    rownames(df) = c("WT_Veh","WT_E2","Y537S_Veh","Y537S_E2","D538G_Veh", "D538G_E2")
+  output$MCF7_1 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), MCF7_1[,"Hugo.name"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
     df = as.data.frame(df)
     
-    df["WT_Veh", "WT_MUT"] = "WT"
-    df["WT_Veh", "E2_Veh"] = "Veh"
-    df["WT_Veh", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 2:5])))
-    df["WT_Veh", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 2:5])))
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(MCF7_1[row, 2:5])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(MCF7_1[row, 2:5])))
     
-    df["WT_E2", "WT_MUT"] = "WT"
-    df["WT_E2", "E2_Veh"] = "E2"
-    df["WT_E2", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 14:17])))
-    df["WT_E2", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 14:17])))
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(MCF7_1[row, 6:9])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(MCF7_1[row, 6:9])))
     
-    df["Y537S_Veh", "WT_MUT"] = "Y537S"
-    df["Y537S_Veh", "E2_Veh"] = "Veh"
-    df["Y537S_Veh", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 6:9])))
-    df["Y537S_Veh", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 6:9])))
     
-    df["Y537S_E2", "WT_MUT"] = "Y537S"
-    df["Y537S_E2", "E2_Veh"] = "E2"
-    df["Y537S_E2", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 18:21])))
-    df["Y537S_E2", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 18:21])))
-    
-    df["D538G_Veh", "WT_MUT"] = "D538G"
-    df["D538G_Veh", "E2_Veh"] = "Veh"
-    df["D538G_Veh", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 10:13])))
-    df["D538G_Veh", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 10:13])))
-    
-    df["D538G_E2", "WT_MUT"] = "D538G"
-    df["D538G_E2", "E2_Veh"] = "E2"
-    df["D538G_E2", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 22:25])))
-    df["D538G_E2", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 22:25])))
-    
-    df$WT_MUT = factor(df$WT_MUT, levels = c("WT", "Y537S", "D538G"))
     df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
     
     
@@ -58,59 +43,37 @@ shinyServer(function(input, output) {
     limits <- aes(ymax = df$meanTPM + df$sdTPM,
                   ymin = df$meanTPM - df$sdTPM)
     
-    p <- ggplot(data = df, aes(x = WT_MUT, y = meanTPM,
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
                                fill = factor(E2_Veh)))
     
     p + geom_bar(stat = "identity",
-                 position = position_dodge(0.9)) +
+                 position = position_dodge(0.9),fill=c("grey","red")) +
       geom_errorbar(limits, position = position_dodge(0.9),
                     width = 0.25) +
-      labs(x = "ER Genotype", y = "log2 TPM") +
-      ggtitle(paste("SO_MCF7_", input$gene)) +
-      scale_fill_discrete(name = "Treatments") + theme(axis.text=element_text(size=18),
-                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), legend.text = element_text(size = 18), legend.title = element_text(size=20))
-    #scale_fill_discrete(name = "E2 status") + theme(axis.text=element_text(size=9),
-    #                                                axis.title=element_text(size=10,face="bold"), plot.title = element_text(size = 10), legend.text = element_text(size = 9), legend.title = element_text(size=10))
+      labs(x = "Treatment", y = "log2 (TPM+1)") +
+      ggtitle(paste("MCF7_1", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+      
   })
   
-  output$plotTPM_T47D_SO <- renderPlot({
-    row = grep(paste("^", input$gene, "$", sep=""), esr1_salmonlog2TPM_HGNC[,"external_gene_name"])
-    df = matrix(NA, nrow = 6, ncol =  4)
-    colnames(df) = c("WT_MUT", "E2_Veh", "meanTPM", "sdTPM")
-    rownames(df) = c("WT_Veh","WT_E2","Y537S_Veh","Y537S_E2","D538G_Veh", "D538G_E2")
+  output$MCF7_2 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), MCF7_2[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
     df = as.data.frame(df)
     
-    df["WT_Veh", "WT_MUT"] = "WT"
-    df["WT_Veh", "E2_Veh"] = "Veh"
-    df["WT_Veh", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 26:29])))
-    df["WT_Veh", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 26:29])))
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(MCF7_2[row, 2:3])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(MCF7_2[row, 2:3])))
     
-    df["WT_E2", "WT_MUT"] = "WT"
-    df["WT_E2", "E2_Veh"] = "E2"
-    df["WT_E2", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 38:41])))
-    df["WT_E2", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 38:41])))
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(MCF7_2[row, 4:5])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(MCF7_2[row, 4:5])))
     
-    df["Y537S_Veh", "WT_MUT"] = "Y537S"
-    df["Y537S_Veh", "E2_Veh"] = "Veh"
-    df["Y537S_Veh", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 30:33])))
-    df["Y537S_Veh", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 30:33])))
     
-    df["Y537S_E2", "WT_MUT"] = "Y537S"
-    df["Y537S_E2", "E2_Veh"] = "E2"
-    df["Y537S_E2", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 42:45])))
-    df["Y537S_E2", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 42:45])))
-    
-    df["D538G_Veh", "WT_MUT"] = "D538G"
-    df["D538G_Veh", "E2_Veh"] = "Veh"
-    df["D538G_Veh", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 34:37])))
-    df["D538G_Veh", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 34:37])))
-    
-    df["D538G_E2", "WT_MUT"] = "D538G"
-    df["D538G_E2", "E2_Veh"] = "E2"
-    df["D538G_E2", "meanTPM"] = mean(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 46:49])))
-    df["D538G_E2", "sdTPM"] = sd(as.vector(as.matrix(esr1_salmonlog2TPM_HGNC[row, 46:49])))
-    
-    df$WT_MUT = factor(df$WT_MUT, levels = c("WT", "Y537S", "D538G"))
     df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
     
     
@@ -118,96 +81,37 @@ shinyServer(function(input, output) {
     limits <- aes(ymax = df$meanTPM + df$sdTPM,
                   ymin = df$meanTPM - df$sdTPM)
     
-    p <- ggplot(data = df, aes(x = WT_MUT, y = meanTPM,
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
                                fill = factor(E2_Veh)))
     
     p + geom_bar(stat = "identity",
-                 position = position_dodge(0.9)) +
+                 position = position_dodge(0.9),fill=c("grey","red")) +
       geom_errorbar(limits, position = position_dodge(0.9),
                     width = 0.25) +
-      labs(x = "ER Genotype", y = "log2 TPM") +
-      ggtitle(paste("SO_T47D_", input$gene)) +
-      scale_fill_discrete(name = "Treatments") + theme(axis.text=element_text(size=18),
-                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), legend.text = element_text(size = 18), legend.title = element_text(size=20))
-  })
-  output$plotTPM_MCF7_SA <- renderPlot({
-    row = grep(paste("^", input$gene, "$", sep=""), Ali[,"hugo"])
-    df = matrix(NA, nrow = 4, ncol =  4)
-    colnames(df) = c("WT_MUT", "E2_Veh", "meanTPM", "sdTPM")
-    rownames(df) = c("WT_Veh","WT_E2","Y537S_Veh","Y537S_E2")
-    df = as.data.frame(df)
+      labs(x = "Treatment", y = "log2 (CPM+1)") +
+      ggtitle(paste("MCF7_2", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
     
-    df["WT_Veh", "WT_MUT"] = "WT"
-    df["WT_Veh", "E2_Veh"] = "Veh"
-    df["WT_Veh", "meanTPM"] = mean(as.vector(as.matrix(Ali[row, 3:5])))
-    df["WT_Veh", "sdTPM"] = sd(as.vector(as.matrix(Ali[row, 3:5])))
-    
-    df["WT_E2", "WT_MUT"] = "WT"
-    df["WT_E2", "E2_Veh"] = "E2"
-    df["WT_E2", "meanTPM"] = mean(as.vector(as.matrix(Ali[row, 6:8])))
-    df["WT_E2", "sdTPM"] = sd(as.vector(as.matrix(Ali[row, 6:8])))
-    
-    df["Y537S_Veh", "WT_MUT"] = "Y537S"
-    df["Y537S_Veh", "E2_Veh"] = "Veh"
-    df["Y537S_Veh", "meanTPM"] = mean(as.vector(as.matrix(Ali[row, 9:11])))
-    df["Y537S_Veh", "sdTPM"] = sd(as.vector(as.matrix(Ali[row, 9:11])))
-    
-    df["Y537S_E2", "WT_MUT"] = "Y537S"
-    df["Y537S_E2", "E2_Veh"] = "E2"
-    df["Y537S_E2", "meanTPM"] = mean(as.vector(as.matrix(Ali[row, 12:13])))
-    df["Y537S_E2", "sdTPM"] = sd(as.vector(as.matrix(Ali[row, 12:13])))
-    
-    df$WT_MUT = factor(df$WT_MUT, levels = c("WT", "Y537S"))
-    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
-    
-    
-    #dodge = spacing between bars 
-    limits <- aes(ymax = df$meanTPM + df$sdTPM,
-                  ymin = df$meanTPM - df$sdTPM)
-    
-    p <- ggplot(data = df, aes(x = WT_MUT, y = meanTPM,
-                               fill = factor(E2_Veh)))
-    
-    p + geom_bar(stat = "identity",
-                 position = position_dodge(0.9)) +
-      geom_errorbar(limits, position = position_dodge(0.9),
-                    width = 0.25) +
-      labs(x = "ER Genotype", y = "log2 TPM") +
-      ggtitle(paste("SA_MCF7-Y537S_", input$gene)) +
-      scale_fill_discrete(name = "Treatments") + theme(axis.text=element_text(size=18),
-                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), legend.text = element_text(size = 18), legend.title = element_text(size=20))
-    #scale_fill_discrete(name = "E2 status") + theme(axis.text=element_text(size=9),
-    #                                                axis.title=element_text(size=10,face="bold"), plot.title = element_text(size = 10), legend.text = element_text(size = 9), legend.title = element_text(size=10))
   })
   
-  output$plotTPM_T47D_MB <- renderPlot({
-    row = grep(paste("^", input$gene, "$", sep=""), MB[,"hugo"])
-    df = matrix(NA, nrow = 4, ncol =  4)
-    colnames(df) = c("WT_MUT", "E2_Veh", "meanTPM", "sdTPM")
-    rownames(df) = c("WT Dox-_Veh","WT Dox-_E2","Y537S Dox+_Veh","Y537S Dox+_E2")
+  output$MCF7_3 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), MCF7_3[,"hugo"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
     df = as.data.frame(df)
     
-    df["WT Dox-_Veh", "WT_MUT"] = "WT Dox-"
-    df["WT Dox-_Veh", "E2_Veh"] = "Veh"
-    df["WT Dox-_Veh", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 7:9])))
-    df["WT Dox-_Veh", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 7:9])))
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(MCF7_3[row, 2:4])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(MCF7_3[row, 2:4])))
     
-    df["WT Dox-_E2", "WT_MUT"] = "WT Dox-"
-    df["WT Dox-_E2", "E2_Veh"] = "E2"
-    df["WT Dox-_E2", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 13:15])))
-    df["WT Dox-_E2", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 13:15])))
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(MCF7_3[row, 5:7])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(MCF7_3[row, 5:7])))
     
-    df["Y537S Dox+_Veh", "WT_MUT"] = "Y537S Dox+"
-    df["Y537S Dox+_Veh", "E2_Veh"] = "Veh"
-    df["Y537S Dox+_Veh", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 10:12])))
-    df["Y537S Dox+_Veh", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 10:12])))
     
-    df["Y537S Dox+_E2", "WT_MUT"] = "Y537S Dox+"
-    df["Y537S Dox+_E2", "E2_Veh"] = "E2"
-    df["Y537S Dox+_E2", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 16:18])))
-    df["Y537S Dox+_E2", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 16:18])))
-    
-    df$WT_MUT = factor(df$WT_MUT, levels = c("WT Dox-", "Y537S Dox+"))
     df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
     
     
@@ -215,48 +119,36 @@ shinyServer(function(input, output) {
     limits <- aes(ymax = df$meanTPM + df$sdTPM,
                   ymin = df$meanTPM - df$sdTPM)
     
-    p <- ggplot(data = df, aes(x = WT_MUT, y = meanTPM,
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
                                fill = factor(E2_Veh)))
     
     p + geom_bar(stat = "identity",
-                 position = position_dodge(0.9)) +
+                 position = position_dodge(0.9),fill=c("grey","red")) +
       geom_errorbar(limits, position = position_dodge(0.9),
                     width = 0.25) +
-      labs(x = "ER Genotype", y = "log2 CPM") +
-      ggtitle(paste("MB_T47D-Y537S_", input$gene)) +
-      scale_fill_discrete(name = "Treatments") + theme(axis.text=element_text(size=18),
-                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), legend.text = element_text(size = 18), legend.title = element_text(size=20))
-    #scale_fill_discrete(name = "E2 status") + theme(axis.text=element_text(size=9),
-    #                                                axis.title=element_text(size=10,face="bold"), plot.title = element_text(size = 10), legend.text = element_text(size = 9), legend.title = element_text(size=10))
+      labs(x = "Treatment", y = "log2 (TPM+1)") +
+      ggtitle(paste("MCF7_3", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
   })
-  output$plotTPM_MCF7_Y537S_MB <- renderPlot({
-    row = grep(paste("^", input$gene, "$", sep=""), MB[,"hugo"])
-    df = matrix(NA, nrow = 4, ncol =  4)
-    colnames(df) = c("WT_MUT", "E2_Veh", "meanTPM", "sdTPM")
-    rownames(df) = c("WT Dox-_Veh","WT Dox-_E2","Y537S Dox+_Veh","Y537S Dox+_E2")
+  output$MCF7_4 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), MCF7_4[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
     df = as.data.frame(df)
     
-    df["WT Dox-_Veh", "WT_MUT"] = "WT Dox-"
-    df["WT Dox-_Veh", "E2_Veh"] = "Veh"
-    df["WT Dox-_Veh", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 25:26])))
-    df["WT Dox-_Veh", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 25:26])))
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(MCF7_4[row, 2:4])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(MCF7_4[row, 2:4])))
     
-    df["WT Dox-_E2", "WT_MUT"] = "WT Dox-"
-    df["WT Dox-_E2", "E2_Veh"] = "E2"
-    df["WT Dox-_E2", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 29:31])))
-    df["WT Dox-_E2", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 29:31])))
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(MCF7_4[row, 5:7])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(MCF7_4[row, 5:7])))
     
-    df["Y537S Dox+_Veh", "WT_MUT"] = "Y537S Dox+"
-    df["Y537S Dox+_Veh", "E2_Veh"] = "Veh"
-    df["Y537S Dox+_Veh", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 27:28])))
-    df["Y537S Dox+_Veh", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 27:28])))
     
-    df["Y537S Dox+_E2", "WT_MUT"] = "Y537S Dox+"
-    df["Y537S Dox+_E2", "E2_Veh"] = "E2"
-    df["Y537S Dox+_E2", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 32:34])))
-    df["Y537S Dox+_E2", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 32:34])))
-    
-    df$WT_MUT = factor(df$WT_MUT, levels = c("WT Dox-", "Y537S Dox+"))
     df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
     
     
@@ -264,48 +156,37 @@ shinyServer(function(input, output) {
     limits <- aes(ymax = df$meanTPM + df$sdTPM,
                   ymin = df$meanTPM - df$sdTPM)
     
-    p <- ggplot(data = df, aes(x = WT_MUT, y = meanTPM,
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
                                fill = factor(E2_Veh)))
     
     p + geom_bar(stat = "identity",
-                 position = position_dodge(0.9)) +
+                 position = position_dodge(0.9),fill=c("grey","red")) +
       geom_errorbar(limits, position = position_dodge(0.9),
                     width = 0.25) +
-      labs(x = "ER Genotype", y = "log2 CPM") +
-      ggtitle(paste("MB_MCF7-Y537S_", input$gene)) +
-      scale_fill_discrete(name = "Treatments") + theme(axis.text=element_text(size=18),
-                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), legend.text = element_text(size = 18), legend.title = element_text(size=20))
-    #scale_fill_discrete(name = "E2 status") + theme(axis.text=element_text(size=9),
-    #                                                axis.title=element_text(size=10,face="bold"), plot.title = element_text(size = 10), legend.text = element_text(size = 9), legend.title = element_text(size=10))
+      labs(x = "Treatment", y = "log2 (CPM+1)") +
+      ggtitle(paste("MCF7_4", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
   })
-  output$plotTPM_MCF7_D538G_MB <- renderPlot({
-    row = grep(paste("^", input$gene, "$", sep=""), MB[,"hugo"])
-    df = matrix(NA, nrow = 4, ncol =  4)
-    colnames(df) = c("WT_MUT", "E2_Veh", "meanTPM", "sdTPM")
-    rownames(df) = c("WT Dox-_Veh","WT Dox-_E2","D538G Dox+_Veh","D538G Dox+_E2")
+  
+  output$T47D_1 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), T47D_1[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
     df = as.data.frame(df)
     
-    df["WT Dox-_Veh", "WT_MUT"] = "WT Dox-"
-    df["WT Dox-_Veh", "E2_Veh"] = "Veh"
-    df["WT Dox-_Veh", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 59:61])))
-    df["WT Dox-_Veh", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 59:61])))
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(T47D_1[row, 2:5])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(T47D_1[row, 2:5])))
     
-    df["WT Dox-_E2", "WT_MUT"] = "WT Dox-"
-    df["WT Dox-_E2", "E2_Veh"] = "E2"
-    df["WT Dox-_E2", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 65:67])))
-    df["WT Dox-_E2", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 65:67])))
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(T47D_1[row, 6:9])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(T47D_1[row, 6:9])))
     
-    df["D538G Dox+_Veh", "WT_MUT"] = "D538G Dox+"
-    df["D538G Dox+_Veh", "E2_Veh"] = "Veh"
-    df["D538G Dox+_Veh", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 62:64])))
-    df["D538G Dox+_Veh", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 62:64])))
     
-    df["D538G Dox+_E2", "WT_MUT"] = "D538G Dox+"
-    df["D538G Dox+_E2", "E2_Veh"] = "E2"
-    df["D538G Dox+_E2", "meanTPM"] = mean(as.vector(as.matrix(MB[row, 68:70])))
-    df["D538G Dox+_E2", "sdTPM"] = sd(as.vector(as.matrix(MB[row, 68:70])))
-    
-    df$WT_MUT = factor(df$WT_MUT, levels = c("WT Dox-", "D538G Dox+"))
     df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
     
     
@@ -313,18 +194,278 @@ shinyServer(function(input, output) {
     limits <- aes(ymax = df$meanTPM + df$sdTPM,
                   ymin = df$meanTPM - df$sdTPM)
     
-    p <- ggplot(data = df, aes(x = WT_MUT, y = meanTPM,
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
                                fill = factor(E2_Veh)))
     
     p + geom_bar(stat = "identity",
-                 position = position_dodge(0.9)) +
+                 position = position_dodge(0.9),fill=c("grey","red")) +
       geom_errorbar(limits, position = position_dodge(0.9),
                     width = 0.25) +
-      labs(x = "ER Genotype", y = "log2 CPM") +
-      ggtitle(paste("MB_MCF7-D538G_", input$gene)) +
-      scale_fill_discrete(name = "Treatments") + theme(axis.text=element_text(size=18),
-                                                      axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)), legend.text = element_text(size = 18), legend.title = element_text(size=20))
-    #scale_fill_discrete(name = "E2 status") + theme(axis.text=element_text(size=9),
-    #                                                axis.title=element_text(size=10,face="bold"), plot.title = element_text(size = 10), legend.text = element_text(size = 9), legend.title = element_text(size=10))
+      labs(x = "Treatment", y = "Log2 (CPM+1)") +
+      ggtitle(paste("T47D_1", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
+  })
+  output$T47D_2 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), T47D_2[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
+    df = as.data.frame(df)
+    
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(T47D_2[row, 2:3])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(T47D_2[row, 2:3])))
+    
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(T47D_2[row, 4:5])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(T47D_2[row, 4:5])))
+    
+    
+    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
+    
+    
+    #dodge = spacing between bars 
+    limits <- aes(ymax = df$meanTPM + df$sdTPM,
+                  ymin = df$meanTPM - df$sdTPM)
+    
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
+                               fill = factor(E2_Veh)))
+    
+    p + geom_bar(stat = "identity",
+                 position = position_dodge(0.9),fill=c("grey","red")) +
+      geom_errorbar(limits, position = position_dodge(0.9),
+                    width = 0.25) +
+      labs(x = "Treatment", y = "Log2 Norm Intensity") +
+      ggtitle(paste("T47D_2", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
+  })
+ 
+  output$T47D_3 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), T47D_3[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
+    df = as.data.frame(df)
+    
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(T47D_3[row, 2:3])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(T47D_3[row, 2:3])))
+    
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(T47D_3[row, 4:5])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(T47D_3[row, 4:5])))
+    
+    
+    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
+    
+    
+    #dodge = spacing between bars 
+    limits <- aes(ymax = df$meanTPM + df$sdTPM,
+                  ymin = df$meanTPM - df$sdTPM)
+    
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
+                               fill = factor(E2_Veh)))
+    
+    p + geom_bar(stat = "identity",
+                 position = position_dodge(0.9),fill=c("grey","red")) +
+      geom_errorbar(limits, position = position_dodge(0.9),
+                    width = 0.25) +
+      labs(x = "Treatment", y = "Log2 (CPM+1)") +
+      ggtitle(paste("T47D_3", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
+  })
+  output$T47D_4 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), T47D_4[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
+    df = as.data.frame(df)
+    
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(T47D_4[row, 2:4])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(T47D_4[row, 2:4])))
+    
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(T47D_4[row, 5:7])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(T47D_4[row, 5:7])))
+    
+    
+    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
+    
+    
+    #dodge = spacing between bars 
+    limits <- aes(ymax = df$meanTPM + df$sdTPM,
+                  ymin = df$meanTPM - df$sdTPM)
+    
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
+                               fill = factor(E2_Veh)))
+    
+    p + geom_bar(stat = "identity",
+                 position = position_dodge(0.9),fill=c("grey","red")) +
+      geom_errorbar(limits, position = position_dodge(0.9),
+                    width = 0.25) +
+      labs(x = "Treatment", y = "Log2 (CPM+1)") +
+      ggtitle(paste("T47D_4", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
+  })
+  output$BT474 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), T47D_2[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
+    df = as.data.frame(df)
+    
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(T47D_2[row, 6:7])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(T47D_2[row, 6:7])))
+    
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(T47D_2[row, 8:9])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(T47D_2[row, 8:9])))
+    
+    
+    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
+    
+    
+    #dodge = spacing between bars 
+    limits <- aes(ymax = df$meanTPM + df$sdTPM,
+                  ymin = df$meanTPM - df$sdTPM)
+    
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
+                               fill = factor(E2_Veh)))
+    
+    p + geom_bar(stat = "identity",
+                 position = position_dodge(0.9),fill=c("grey","red")) +
+      geom_errorbar(limits, position = position_dodge(0.9),
+                    width = 0.25) +
+      labs(x = "Treatment", y = "Log2 Norm Intensity") +
+      ggtitle(paste("BT474", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
+  })
+  output$ZR <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), ZR[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
+    df = as.data.frame(df)
+    
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(ZR[row, 2:5])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(ZR[row, 2:5])))
+    
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(ZR[row, 6:9])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(ZR[row, 6:9])))
+    
+    
+    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
+    
+    
+    #dodge = spacing between bars 
+    limits <- aes(ymax = df$meanTPM + df$sdTPM,
+                  ymin = df$meanTPM - df$sdTPM)
+    
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
+                               fill = factor(E2_Veh)))
+    
+    p + geom_bar(stat = "identity",
+                 position = position_dodge(0.9),fill=c("grey","red")) +
+      geom_errorbar(limits, position = position_dodge(0.9),
+                    width = 0.25) +
+      labs(x = "Treatment", y = "Log2 Norm Intensity") +
+      ggtitle(paste("ZR75-1", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
+  })
+  output$MM134 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), Sikora[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
+    df = as.data.frame(df)
+    
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(Sikora[row, 2:5])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(Sikora[row, 2:5])))
+    
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(Sikora[row, 6:9])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(Sikora[row, 6:9])))
+    
+    
+    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
+    
+    
+    #dodge = spacing between bars 
+    limits <- aes(ymax = df$meanTPM + df$sdTPM,
+                  ymin = df$meanTPM - df$sdTPM)
+    
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
+                               fill = factor(E2_Veh)))
+    
+    p + geom_bar(stat = "identity",
+                 position = position_dodge(0.9),fill=c("grey","red")) +
+      geom_errorbar(limits, position = position_dodge(0.9),
+                    width = 0.25) +
+      labs(x = "Treatment", y = "Log2 Norm Intensity") +
+      ggtitle(paste("MM134", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
+  })
+  output$SUM44 <- renderPlot({
+    row = grep(paste("^", input$gene, "$", sep=""), Sikora[,"X"])
+    df = matrix(NA, nrow = 2, ncol =  3)
+    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
+    rownames(df) = c("Veh","E2")
+    df = as.data.frame(df)
+    
+    df["Veh", "E2_Veh"] = "Veh"
+    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(Sikora[row, 10:13])))
+    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(Sikora[row, 10:13])))
+    
+    df["E2", "E2_Veh"] = "E2"
+    df["E2", "meanTPM"] = mean(as.vector(as.matrix(Sikora[row, 14:17])))
+    df["E2", "sdTPM"] = sd(as.vector(as.matrix(Sikora[row, 14:17])))
+    
+    
+    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
+    
+    
+    #dodge = spacing between bars 
+    limits <- aes(ymax = df$meanTPM + df$sdTPM,
+                  ymin = df$meanTPM - df$sdTPM)
+    
+    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
+                               fill = factor(E2_Veh)))
+    
+    p + geom_bar(stat = "identity",
+                 position = position_dodge(0.9),fill=c("grey","red")) +
+      geom_errorbar(limits, position = position_dodge(0.9),
+                    width = 0.25) +
+      labs(x = "Treatment", y = "Log2 Norm Intensity") +
+      ggtitle(paste("SUM44", input$gene)) +
+      scale_fill_discrete(name = "Treatments") + 
+      theme(axis.text=element_text(size=18),
+            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
+    
   })
 })
