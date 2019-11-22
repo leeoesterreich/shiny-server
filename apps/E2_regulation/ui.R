@@ -8,7 +8,7 @@ shinyUI(fluidPage(
       
       textInput("gene", label= "Enter Gene Symbol in CAPITAL letters", value = "ESR1"),
 
-      helpText("RNA-seq data were extracted from three resources:"),
+      helpText("All data were extracted from the following resources:"),
                
       tableOutput("Table"),
     width=3),

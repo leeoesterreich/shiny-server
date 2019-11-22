@@ -170,80 +170,7 @@ shinyServer(function(input, output) {
             axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
     
   })
-  output$MCF7_5 <- renderPlot({
-    row = grep(paste("^", input$gene, "$", sep=""), MCF7_5[,"X"])
-    df = matrix(NA, nrow = 2, ncol =  3)
-    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
-    rownames(df) = c("Veh","E2")
-    df = as.data.frame(df)
-    
-    df["Veh", "E2_Veh"] = "Veh"
-    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(MCF7_5[row, 2:9])))
-    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(MCF7_5[row, 2:9])))
-    
-    df["E2", "E2_Veh"] = "E2"
-    df["E2", "meanTPM"] = mean(as.vector(as.matrix(MCF7_5[row, 10:17])))
-    df["E2", "sdTPM"] = sd(as.vector(as.matrix(MCF7_5[row, 10:17])))
-    
-    
-    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
-    
-    
-    #dodge = spacing between bars 
-    limits <- aes(ymax = df$meanTPM + df$sdTPM,
-                  ymin = df$meanTPM - df$sdTPM)
-    
-    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
-                               fill = factor(E2_Veh)))
-    
-    p + geom_bar(stat = "identity",
-                 position = position_dodge(0.9),fill=c("grey","red")) +
-      geom_errorbar(limits, position = position_dodge(0.9),
-                    width = 0.25) +
-      labs(x = "Treatment", y = "Log2 (CPM+1)") +
-      ggtitle(paste("MCF7_5", input$gene)) +
-      scale_fill_discrete(name = "Treatments") + 
-      theme(axis.text=element_text(size=18),
-            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
-    
-  })
-  output$MCF7_6 <- renderPlot({
-    row = grep(paste("^", input$gene, "$", sep=""), MCF7_6[,"X"])
-    df = matrix(NA, nrow = 2, ncol =  3)
-    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
-    rownames(df) = c("Veh","E2")
-    df = as.data.frame(df)
-    
-    df["Veh", "E2_Veh"] = "Veh"
-    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(MCF7_6[row, 2:4])))
-    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(MCF7_6[row, 2:4])))
-    
-    df["E2", "E2_Veh"] = "E2"
-    df["E2", "meanTPM"] = mean(as.vector(as.matrix(MCF7_6[row, 5:7])))
-    df["E2", "sdTPM"] = sd(as.vector(as.matrix(MCF7_6[row, 5:7])))
-    
-    
-    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
-    
-    
-    #dodge = spacing between bars 
-    limits <- aes(ymax = df$meanTPM + df$sdTPM,
-                  ymin = df$meanTPM - df$sdTPM)
-    
-    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
-                               fill = factor(E2_Veh)))
-    
-    p + geom_bar(stat = "identity",
-                 position = position_dodge(0.9),fill=c("grey","red")) +
-      geom_errorbar(limits, position = position_dodge(0.9),
-                    width = 0.25) +
-      labs(x = "Treatment", y = "Log2 (CPM+1)") +
-      ggtitle(paste("MCF7_6", input$gene)) +
-      scale_fill_discrete(name = "Treatments") + 
-      theme(axis.text=element_text(size=18),
-            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
-    
-  })
+  
   output$T47D_1 <- renderPlot({
     row = grep(paste("^", input$gene, "$", sep=""), T47D_1[,"X"])
     df = matrix(NA, nrow = 2, ncol =  3)
@@ -318,43 +245,7 @@ shinyServer(function(input, output) {
             axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
     
   })
-  output$MCF7_7 <- renderPlot({
-    row = grep(paste("^", input$gene, "$", sep=""), MCF7_7[,"X"])
-    df = matrix(NA, nrow = 2, ncol =  3)
-    colnames(df) = c("E2_Veh", "meanTPM", "sdTPM")
-    rownames(df) = c("Veh","E2")
-    df = as.data.frame(df)
-    
-    df["Veh", "E2_Veh"] = "Veh"
-    df["Veh", "meanTPM"] = mean(as.vector(as.matrix(MCF7_7[row, 2:3])))
-    df["Veh", "sdTPM"] = sd(as.vector(as.matrix(MCF7_7[row, 2:3])))
-    
-    df["E2", "E2_Veh"] = "E2"
-    df["E2", "meanTPM"] = mean(as.vector(as.matrix(MCF7_7[row, 4:5])))
-    df["E2", "sdTPM"] = sd(as.vector(as.matrix(MCF7_7[row, 4:5])))
-    
-    
-    df$E2_Veh = factor(df$E2_Veh, levels = c("Veh", "E2"))
-    
-    
-    #dodge = spacing between bars 
-    limits <- aes(ymax = df$meanTPM + df$sdTPM,
-                  ymin = df$meanTPM - df$sdTPM)
-    
-    p <- ggplot(data = df, aes(x = E2_Veh, y = meanTPM,
-                               fill = factor(E2_Veh)))
-    
-    p + geom_bar(stat = "identity",
-                 position = position_dodge(0.9),fill=c("grey","red")) +
-      geom_errorbar(limits, position = position_dodge(0.9),
-                    width = 0.25) +
-      labs(x = "Treatment", y = "Log2 (CPM+1)") +
-      ggtitle(paste("MCF7_7", input$gene)) +
-      scale_fill_discrete(name = "Treatments") + 
-      theme(axis.text=element_text(size=18),
-            axis.title=element_text(size=20,face="bold"), plot.title = element_text(size = rel(2)),legend.position="none")
-    
-  })
+ 
   output$T47D_3 <- renderPlot({
     row = grep(paste("^", input$gene, "$", sep=""), T47D_3[,"X"])
     df = matrix(NA, nrow = 2, ncol =  3)
