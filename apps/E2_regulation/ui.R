@@ -10,7 +10,7 @@ shinyUI(fluidPage(
 
       helpText("All data were extracted from the following resources:"),
               
-    ,
+      tableOutput("Table"),
     width=3),
     
     mainPanel(
