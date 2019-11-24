@@ -45,7 +45,7 @@ shinyServer(function(input, output) {
                  position = position_dodge(0.9),fill=c("grey","red")) +
       geom_errorbar(limits, position = position_dodge(0.9),
                     width = 0.25) +
-      labs(x = "Treatment", y = "log2 (TPM+1)") +
+      labs(x = "Treatment", y = "Log2 (TPM+1)") +
       ggtitle(paste("MCF7_1", input$gene)) +
       scale_fill_discrete(name = "Treatments") + 
       theme(axis.text=element_text(size=18),
@@ -83,7 +83,7 @@ shinyServer(function(input, output) {
                  position = position_dodge(0.9),fill=c("grey","red")) +
       geom_errorbar(limits, position = position_dodge(0.9),
                     width = 0.25) +
-      labs(x = "Treatment", y = "log2 (CPM+1)") +
+      labs(x = "Treatment", y = "Log2 (CPM+1)") +
       ggtitle(paste("MCF7_2", input$gene)) +
       scale_fill_discrete(name = "Treatments") + 
       theme(axis.text=element_text(size=18),
@@ -121,7 +121,7 @@ shinyServer(function(input, output) {
                  position = position_dodge(0.9),fill=c("grey","red")) +
       geom_errorbar(limits, position = position_dodge(0.9),
                     width = 0.25) +
-      labs(x = "Treatment", y = "log2 (TPM+1)") +
+      labs(x = "Treatment", y = "Log2 (TPM+1)") +
       ggtitle(paste("MCF7_3", input$gene)) +
       scale_fill_discrete(name = "Treatments") + 
       theme(axis.text=element_text(size=18),
@@ -158,7 +158,7 @@ shinyServer(function(input, output) {
                  position = position_dodge(0.9),fill=c("grey","red")) +
       geom_errorbar(limits, position = position_dodge(0.9),
                     width = 0.25) +
-      labs(x = "Treatment", y = "log2 (CPM+1)") +
+      labs(x = "Treatment", y = "Log2 (CPM+1)") +
       ggtitle(paste("MCF7_4", input$gene)) +
       scale_fill_discrete(name = "Treatments") + 
       theme(axis.text=element_text(size=18),
